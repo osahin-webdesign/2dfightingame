@@ -70,9 +70,7 @@ padding-top:10px;
     <span>↓← '</span> Tandem (record clone)
   </div>
 </div>
-<canvas id="game" width="960" height="540" max-width:100vw;
-max-height:calc(100vh - 80px);
-></canvas>
+<canvas id="game"></canvas>
 <div id="subtitle">SUPERS COST METER · JUMP OVER OPPONENT TO CROSS UP · TANDEM: ↓←KICK</div>
 <div id="tandem-banner">◆ TANDEM INPUT RECORDING ◆</div>
 
@@ -83,11 +81,14 @@ const ctx=c.getContext('2d');
 function resizeGame(){
   c.width = window.innerWidth;
   c.height = window.innerHeight;
+
   GROUND = window.innerHeight - 140;
+
+  STAGE_W = c.width;
 }
 window.addEventListener('resize', resizeGame);
 resizeGame();
-
+let STAGE_W = c.width;
 
 // ── Input ──────────────────────────────────────────────────────────────
 const keys=Object.create(null);
@@ -103,7 +104,7 @@ window.addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=false;});
 // ── Constants ──────────────────────────────────────────────────────────
 let GROUND = window.innerHeight - 140;,GRAVITY=0.70,MAX_SPEED=4.8,IBUF=9;
 const COMBO_TIMEOUT=72,TANDEM_FRAMES=72,TANDEM_LIMIT=30;
-const STAGE_W=c.width,PUSH_SCALE=0.38,SUPER_MAX=100;
+PUSH_SCALE=0.38,SUPER_MAX=100;
 
 let globalHitstop=0,shake=0,frame=0;
 let gamePaused=false,pauseOwner=null;
@@ -371,7 +372,15 @@ class Fighter{
     }
     return true;
   }
-
+  
+  canvas{
+  border:3px solid #2a3a52;
+  box-shadow:0 0 40px #0008,0 0 80px #c9a84c18;
+  image-rendering:pixelated;
+  display:block;
+  width:100vw;
+  height:100vh;
+}
   updateSuper(op){
     if(!this.superActive)return;
     this.superTimer++;
